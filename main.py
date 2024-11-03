@@ -6,9 +6,13 @@
 from vex import *
 brain=Brain()
 
-        
-right_wheels = MotorGroup (Ports.PORT1, GearSetting.RATIO_6_1, Ports.PORT2, GearSetting.RATIO_6_1)
-left_wheels = MotorGroup (Ports.PORT3, GearSetting.RATIO_6_1, Ports.PORT4, GearSetting.RATIO_6_1)
+right_wheel_1 = Motor(Ports.PORT1, GearSetting.RATIO_18_1)
+right_wheel_2 = Motor(Ports.PORT2, GearSetting.RATIO_18_1)
+left_wheel_1 = Motor(Ports.PORT3, GearSetting.RATIO_18_1)
+left_wheel_2 = Motor(Ports.PORT4, GearSetting.RATIO_18_1)
+
+right_wheels = MotorGroup (right_wheel_1, right_wheel_2)
+left_wheels = MotorGroup (left_wheel_1, left_wheel_2)
 conveyer = Motor(Ports.PORT5, GearSetting.RATIO_18_1)
 flex_wheels = Motor(Ports.PORT6, GearSetting.RATIO_18_1)
 
@@ -19,11 +23,11 @@ bradley_controller_joystick_right = bradley_controller.axis4.position()
 
 def sprint():
     if bradley_controller_joystick_left>2 and bradley_controller.buttonL1.pressing:
-        left_wheels.spin(FORWARD, 120)
+        left_wheels.spin(FORWARD, 120, RPM)
         bradley_controller.buttonL1.released (left_wheels.stop)
     
     if bradley_controller_joystick_right>2 and bradley_controller.buttonL1.pressing:
-        right_wheels.spin(FORWARD, 120)
+        right_wheels.spin(FORWARD, 120, RPM)
         bradley_controller.buttonL2.released (right_wheels.stop)
 
 def intake():
@@ -34,26 +38,26 @@ def intake():
 
 def ring_riser():
     if bradley_controller.buttonA.pressed:
-        conveyer.spin(FORWARD, RPM, 20)
+        conveyer.spin(FORWARD, 20, RPM)
     if bradley_controller.buttonA.pressed and conveyer.velocity(RPM)>5:
         conveyer.stop()
 
 def drive():
     if bradley_controller_joystick_left>2:
-        left_wheels.spin(FORWARD, 80)
+        left_wheels.spin(FORWARD, 80, RPM)
         wait (5, MSEC)
         left_wheels.stop()
     if bradley_controller_joystick_right>2:
-        right_wheels.spin(FORWARD, 80)
+        right_wheels.spin(FORWARD, 80, RPM)
         wait (5, MSEC)
         right_wheels.stop()
 
     if bradley_controller_joystick_left<-2:
-        left_wheels.spin(REVERSE, 80)
+        left_wheels.spin(REVERSE, 80, RPM)
         wait (5, MSEC)
         left_wheels.stop()
     if bradley_controller_joystick_right<-2:
-        right_wheels.spin(REVERSE, 80)
+        right_wheels.spin(REVERSE, 80, RPM)
         wait (5, MSEC)
         right_wheels.stop()
 
@@ -63,4 +67,4 @@ while True:
     sprint()
     intake()
     ring_riser()
-    wait(10, MSEC)
+    wait(5, MSEC)

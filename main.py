@@ -18,44 +18,44 @@ bradley_controller_joystick_left = bradley_controller.axis2.position()
 bradley_controller_joystick_right = bradley_controller.axis4.position()
 
 def sprint():
-    if bradley_controller_joystick_left>52 and bradley_controller.buttonL1.pressing:
+    if bradley_controller_joystick_left>2 and bradley_controller.buttonL1.pressing:
         left_wheels.spin(FORWARD, 120)
         bradley_controller.buttonL1.released (left_wheels.stop)
     
-    if bradley_controller_joystick_right>52 and bradley_controller.buttonL2.pressing:
+    if bradley_controller_joystick_right>2 and bradley_controller.buttonL1.pressing:
         right_wheels.spin(FORWARD, 120)
         bradley_controller.buttonL2.released (right_wheels.stop)
 
 def intake():
     if bradley_controller.buttonB.pressed:
         flex_wheels.spin(FORWARD, RPM, 20)
-    elif bradley_controller.buttonB.pressed:
-        flex_wheels.spin(FORWARD, RPM, 0)
+    if bradley_controller.buttonB.pressed and flex_wheels.velocity(RPM)>5:
+        flex_wheels.stop()
 
 def ring_riser():
     if bradley_controller.buttonA.pressed:
         conveyer.spin(FORWARD, RPM, 20)
-    elif bradley_controller.buttonA.pressed:
-        conveyer.spin(FORWARD, RPM, 0)
+    if bradley_controller.buttonA.pressed and conveyer.velocity(RPM)>5:
+        conveyer.stop()
 
 def drive():
-    if bradley_controller_joystick_left>52:
+    if bradley_controller_joystick_left>2:
         left_wheels.spin(FORWARD, 80)
-        wait (duration=20)
-        left_wheels.spin(FORWARD, 0)
-    if bradley_controller_joystick_right>52:
+        wait (5, MSEC)
+        left_wheels.stop()
+    if bradley_controller_joystick_right>2:
         right_wheels.spin(FORWARD, 80)
-        wait (duration=20)
-        right_wheels.spin(FORWARD, 0)
+        wait (5, MSEC)
+        right_wheels.stop()
 
-    if bradley_controller_joystick_left<48:
+    if bradley_controller_joystick_left<-2:
         left_wheels.spin(REVERSE, 80)
-        wait (duration=20)
-        left_wheels.spin(REVERSE, 0)
-    if bradley_controller_joystick_right<48:
+        wait (5, MSEC)
+        left_wheels.stop()
+    if bradley_controller_joystick_right<-2:
         right_wheels.spin(REVERSE, 80)
-        wait (duration=20)
-        right_wheels.spin(REVERSE, 0)
+        wait (5, MSEC)
+        right_wheels.stop()
 
 while True:
    

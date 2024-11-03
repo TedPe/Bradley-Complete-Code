@@ -4,12 +4,28 @@
 # ---------------------------------------------------------------------------- #
 
 from vex_tests import *
-from globals import *
+import time
 
 
 brain=Brain()
 
-        
+
+
+
+right1 = Motor(Ports.PORT11, GearSetting.RATIO_6_1)
+right2 = Motor(Ports.PORT12, GearSetting.RATIO_6_1)
+left1 = Motor(Ports.PORT9, GearSetting.RATIO_6_1)
+left2 = Motor(Ports.PORT10, GearSetting.RATIO_6_1)
+
+right_wheels = MotorGroup (right1, right2)
+left_wheels = MotorGroup ( left1, left2)
+conveyer = Motor(Ports.PORT5, GearSetting.RATIO_18_1)
+flex_wheels = Motor(Ports.PORT1, GearSetting.RATIO_18_1)
+
+bradley_controller = Controller(ControllerType.PRIMARY)
+
+bradley_controller_joystick_left = bradley_controller.axis2.position()
+bradley_controller_joystick_right = bradley_controller.axis4.position()        
 
 
 def sprint():
@@ -34,6 +50,7 @@ def ring_riser():
         conveyer.spin(FORWARD, RPM, 0)
 
 def drive():
+    print("drive")
     if bradley_controller_joystick_left>52:
         left_wheels.spin(FORWARD, 80)
         wait (duration=20)

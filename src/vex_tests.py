@@ -1,3 +1,58 @@
+class Brain:
+    class Screen:
+        def __init__(self):
+            self.content = ""  # Stores the screen content
+
+        def print(self, text):
+            """Simulate printing text to the Brain screen."""
+            self.content += text + "\n"
+            print(text)  # This simulates the output to the Brain screen
+
+        def clear_screen(self):
+            """Simulate clearing the Brain screen."""
+            self.content = ""
+            print("Screen cleared!")  # Simulate the clear screen action
+
+        def print_at(self, x, y, text):
+            """Simulate printing at specific coordinates on the Brain screen."""
+            print(f"Printing at ({x}, {y}): {text}")
+
+    class Timer:
+        def __init__(self):
+            import time
+            self.start_time = time.time()
+
+        def time(self, unit="seconds"):
+            """Return the elapsed time in the specified unit (seconds by default)."""
+            import time
+            elapsed_time = time.time() - self.start_time
+            if unit == "seconds":
+                return elapsed_time
+            elif unit == "milliseconds":
+                return elapsed_time * 1000
+            elif unit == "microseconds":
+                return elapsed_time * 1000000
+
+        def reset(self):
+            """Reset the timer to zero."""
+            import time
+            self.start_time = time.time()
+            print("Timer reset")
+
+    def __init__(self):
+        self.screen = self.Screen()
+        self.timer = self.Timer()
+
+
+class GearSetting:
+    RATIO36_1 = "36:1"
+    RATIO18_1 = "18:1"
+    RATIO6_1 = "6:1"    
+    RATIO_36_1 = "36:1"
+    RATIO_18_1 = "18:1"
+    RATIO_6_1 = "6:1"
+
+
 class Ports:
     # Define the available ports as class attributes
     PORT1 = "PORT1"
@@ -10,6 +65,7 @@ class Ports:
     PORT8 = "PORT8"
     PORT9 = "PORT9"
     PORT10 = "PORT10"
+    PORT11 = "PORT11"
     # Add more ports if needed
 
 class Motor:

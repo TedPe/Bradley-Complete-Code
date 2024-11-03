@@ -4,6 +4,7 @@
 # ---------------------------------------------------------------------------- #
 
 from vex import *
+
 brain=Brain()
 
 right_wheel_1 = Motor(Ports.PORT1, GearSetting.RATIO_18_1)
@@ -24,22 +25,24 @@ bradley_controller_joystick_right = bradley_controller.axis4.position()
 def sprint():
     if bradley_controller_joystick_left>2 and bradley_controller.buttonL1.pressing:
         left_wheels.spin(FORWARD, 120, RPM)
-        bradley_controller.buttonL1.released (left_wheels.stop)
+    if bradley_controller.buttonL1.released:
+        (left_wheels.stop)
     
     if bradley_controller_joystick_right>2 and bradley_controller.buttonL1.pressing:
         right_wheels.spin(FORWARD, 120, RPM)
-        bradley_controller.buttonL2.released (right_wheels.stop)
+    if bradley_controller.buttonL2.released:
+        (right_wheels.stop)
 
 def intake():
-    if bradley_controller.buttonB.pressed:
+    if bradley_controller.buttonB.pressed and flex_wheels.velocity(RPM)>-5 and flex_wheels.velocity(RPM)<5:
         flex_wheels.spin(FORWARD, RPM, 20)
-    if bradley_controller.buttonB.pressed and flex_wheels.velocity(RPM)>5:
+    if bradley_controller.buttonB.pressed and flex_wheels.velocity(RPM)>5 or flex_wheels.velocity(RPM)<-5:
         flex_wheels.stop()
 
 def ring_riser():
-    if bradley_controller.buttonA.pressed:
+    if bradley_controller.buttonA.pressed and conveyer.velocity(RPM)>-5 and conveyer.velocity(RPM)<5:
         conveyer.spin(FORWARD, 20, RPM)
-    if bradley_controller.buttonA.pressed and conveyer.velocity(RPM)>5:
+    if bradley_controller.buttonA.pressed and conveyer.velocity(RPM)>5 or conveyer.velocity(RPM)<-5:
         conveyer.stop()
 
 def drive():

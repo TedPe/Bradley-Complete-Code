@@ -3,19 +3,14 @@
 #   Created:      10/7/2024, 8:22:30 PM                                        #
 # ---------------------------------------------------------------------------- #
 
-from vex import *
+from vex_tests import *
+from globals import *
+
+
 brain=Brain()
 
         
-right_wheels = MotorGroup (Ports.PORT1, GearSetting.RATIO_6_1, Ports.PORT2, GearSetting.RATIO_6_1)
-left_wheels = MotorGroup (Ports.PORT3, GearSetting.RATIO_6_1, Ports.PORT4, GearSetting.RATIO_6_1)
-conveyer = Motor(Ports.PORT5, GearSetting.RATIO_18_1)
-flex_wheels = Motor(Ports.PORT6, GearSetting.RATIO_18_1)
 
-bradley_controller = Controller(ControllerType.PRIMARY)
-
-bradley_controller_joystick_left = bradley_controller.axis2.position()
-bradley_controller_joystick_right = bradley_controller.axis4.position()
 
 def sprint():
     if bradley_controller_joystick_left>52 and bradley_controller.buttonL1.pressing:
@@ -60,7 +55,7 @@ def drive():
 while True:
    
     drive()
-    sprint()
-    intake()
-    ring_riser()
+    #sprint()
+    #intake()
+    #ring_riser()
     wait(10, MSEC)

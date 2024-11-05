@@ -7,15 +7,19 @@ from vex import *
 
 brain=Brain()
 
-right_wheel_1 = Motor(Ports.PORT1, GearSetting.RATIO_6_1)
-right_wheel_2 = Motor(Ports.PORT2, GearSetting.RATIO_6_1)
-left_wheel_1 = Motor(Ports.PORT3, GearSetting.RATIO_6_1)
-left_wheel_2 = Motor(Ports.PORT4, GearSetting.RATIO_6_1)
+
+rpm1 = 0
+
+
+right_wheel_1 = Motor(Ports.PORT11, GearSetting.RATIO_6_1)
+right_wheel_2 = Motor(Ports.PORT12, GearSetting.RATIO_6_1)
+left_wheel_1 = Motor(Ports.PORT9, GearSetting.RATIO_6_1)
+left_wheel_2 = Motor(Ports.PORT10, GearSetting.RATIO_6_1)
 
 right_wheels = MotorGroup (right_wheel_1, right_wheel_2)
 left_wheels = MotorGroup (left_wheel_1, left_wheel_2)
 conveyer = Motor(Ports.PORT5, GearSetting.RATIO_18_1)
-flex_wheels = Motor(Ports.PORT6, GearSetting.RATIO_18_1)
+flex_wheels = Motor(Ports.PORT1, GearSetting.RATIO_18_1)
 
 bradley_controller = Controller(ControllerType.PRIMARY)
 
@@ -24,9 +28,10 @@ bradley_controller_joystick_right = bradley_controller.axis4.position()
 
 def sprint():
     if bradley_controller_joystick_left>2 and bradley_controller.buttonL1.pressing:
-        left_wheels.spin(FORWARD, 120, RPM)
+        left_wheels.spin(FORWARD, rpm1, RPM)
     if bradley_controller.buttonL1.released:
         left_wheels.stop()
+        
     
     if bradley_controller_joystick_right>2 and bradley_controller.buttonL1.pressing:
         right_wheels.spin(FORWARD, 120, RPM)
@@ -47,9 +52,16 @@ def ring_riser():
 
 def drive():
     if bradley_controller_joystick_left>2:
-        left_wheels.spin(FORWARD, 80, RPM)
-        wait (5, MSEC)
-        left_wheels.stop()
+        global rpm1
+        rpm1 = rpm1 + 5
+        print (str(rpm1))
+       
+
+    rpm =max(80, 9)
+
+    left_wheels.spin(FORWARD, 80, RPM)
+    wait (5, MSEC)
+    left_wheels.stop()
     if bradley_controller_joystick_right>2:
         right_wheels.spin(FORWARD, 80, RPM)
         wait (5, MSEC)

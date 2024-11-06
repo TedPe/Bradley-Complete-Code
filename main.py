@@ -40,6 +40,16 @@ def sprint():
         rpm2 += 25
         max (rpm2, 550)
 
+    if bradley_controller_joystick_left<-2 and bradley_controller.buttonL1.pressing:
+        global rpm3
+        rpm3 += 25
+        max (rpm3, 550)
+    
+    if bradley_controller_joystick_right<-2 and bradley_controller.buttonL1.pressing:
+        global rpm4
+        rpm4 += 25
+        max (rpm4, 550)
+
 def intake():
     if bradley_controller.buttonB.pressed and flex_wheels.velocity(RPM)>-5 and flex_wheels.velocity(RPM)<5:
         flex_wheels.spin(FORWARD, 20, RPM)
@@ -66,20 +76,47 @@ def drive():
     if bradley_controller_joystick_left<-2:
         global rpm3
         rpm3 += 20
+        max (rpm3, 400)
     
     if bradley_controller_joystick_right<-2:
         global rpm4
         rpm4 += 20
+        max (rpm4, 400)
 
 
     if rpm2 > rpm1:
-        rpm1 = 0
+        rpm1 -= 50
+        min (rpm1, 0)
     if rpm1 > rpm2:
-        rpm2 = 0
+        rpm2 -= 50
+        min (rpm2, 0)
     if rpm3 > rpm4:
-        rpm4 = 0
+        rpm4 -= 50
+        min (rpm4, 0)
     if rpm4 > rpm3:
-        rpm3 = 0
+        rpm3 -= 50
+        min (rpm3, 0)
+
+def stop():
+    if bradley_controller_joystick_left >-3 and bradley_controller_joystick_left<3:
+        global rpm1
+        global rpm3
+
+        rpm1 -= 50
+        rpm3 -= 50
+
+        min (rpm1, 0)
+        min (rpm3, 0)
+
+    if bradley_controller_joystick_right >-3 and bradley_controller_joystick_right<3:
+        global rpm2
+        global rpm4
+
+        rpm2 -= 50
+        rpm4 -= 50
+
+        min (rpm2, 0)
+        min (rpm4, 0)
 
 while True:
    
@@ -87,8 +124,11 @@ while True:
     sprint()
     intake()
     ring_riser()
+    stop()
+
     left_wheels.spin(FORWARD, rpm1, RPM)
     right_wheels.spin(FORWARD, rpm2, RPM)
     left_wheels.spin(REVERSE, rpm3, RPM)
     right_wheels.spin(REVERSE, rpm4, RPM)
+
     wait(5, MSEC)

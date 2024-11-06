@@ -9,6 +9,9 @@ brain=Brain()
 
 
 rpm1 = 0
+rpm2 = 0
+rpm3 = 0
+rpm4 = 0
 
 
 right_wheel_1 = Motor(Ports.PORT11, GearSetting.RATIO_6_1)
@@ -28,15 +31,14 @@ bradley_controller_joystick_right = bradley_controller.axis4.position()
 
 def sprint():
     if bradley_controller_joystick_left>2 and bradley_controller.buttonL1.pressing:
-        left_wheels.spin(FORWARD, rpm1, RPM)
-    if bradley_controller.buttonL1.released:
-        left_wheels.stop()
-        
+        global rpm1
+        rpm1 += 25
+        max (rpm1, 550)
     
     if bradley_controller_joystick_right>2 and bradley_controller.buttonL1.pressing:
-        right_wheels.spin(FORWARD, 120, RPM)
-    if bradley_controller.buttonL2.released:
-        right_wheels.stop()
+        global rpm2
+        rpm2 += 25
+        max (rpm2, 550)
 
 def intake():
     if bradley_controller.buttonB.pressed and flex_wheels.velocity(RPM)>-5 and flex_wheels.velocity(RPM)<5:
@@ -46,35 +48,38 @@ def intake():
 
 def ring_riser():
     if bradley_controller.buttonA.pressed and conveyer.velocity(RPM)>-5 and conveyer.velocity(RPM)<5:
-        conveyer.spin(FORWARD, 20, RPM)
+        conveyer.spin(FORWARD, 150, RPM)
     if bradley_controller.buttonA.pressed and conveyer.velocity(RPM)>5 or conveyer.velocity(RPM)<-5:
         conveyer.stop()
 
 def drive():
     if bradley_controller_joystick_left>2:
         global rpm1
-        rpm1 = rpm1 + 5
-        print (str(rpm1))
-       
+        rpm1 += 20
+        max (rpm1, 400)
 
-    rpm =max(80, 9)
-
-    left_wheels.spin(FORWARD, 80, RPM)
-    wait (5, MSEC)
-    left_wheels.stop()
     if bradley_controller_joystick_right>2:
-        right_wheels.spin(FORWARD, 80, RPM)
-        wait (5, MSEC)
-        right_wheels.stop()
+        global rpm2
+        rpm2 += 20
+        max (rpm2, 400)
 
     if bradley_controller_joystick_left<-2:
-        left_wheels.spin(REVERSE, 80, RPM)
-        wait (5, MSEC)
-        left_wheels.stop()
+        global rpm3
+        rpm3 += 20
+    
     if bradley_controller_joystick_right<-2:
-        right_wheels.spin(REVERSE, 80, RPM)
-        wait (5, MSEC)
-        right_wheels.stop()
+        global rpm4
+        rpm4 += 20
+
+
+    if rpm2 > rpm1:
+        rpm1 = 0
+    if rpm1 > rpm2:
+        rpm2 = 0
+    if rpm3 > rpm4:
+        rpm4 = 0
+    if rpm4 > rpm3:
+        rpm3 = 0
 
 while True:
    
@@ -82,4 +87,8 @@ while True:
     sprint()
     intake()
     ring_riser()
+    left_wheels.spin(FORWARD, rpm1, RPM)
+    right_wheels.spin(FORWARD, rpm2, RPM)
+    left_wheels.spin(REVERSE, rpm3, RPM)
+    right_wheels.spin(REVERSE, rpm4, RPM)
     wait(5, MSEC)

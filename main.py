@@ -108,6 +108,11 @@ def stop():
         rpm2 = 0
         rpm4 = 0
 
+def rpm_regulation():
+    global rpm1
+    global rpm2
+    global rpm3
+    global rpm4
 
     if rpm3 > rpm1:
         rpm1 =0
@@ -118,7 +123,6 @@ def stop():
     if rpm1 > rpm3:
         rpm3 =0
 
-
     if rpm1 < 0:
         rpm1 = 0
     if rpm2 < 0:
@@ -128,13 +132,13 @@ def stop():
     if rpm4 < 0:
         rpm4 = 0
 
-    if rpm1 > 600:
+    if rpm1 > 570:
         rpm1 = 570
-    if rpm2 > 600:
+    if rpm2 > 570:
         rpm2 = 570
-    if rpm3 > 600:
+    if rpm3 > 570:
         rpm3 = 570
-    if rpm4 > 600:
+    if rpm4 > 570:
         rpm4 = 570
 
 
@@ -145,6 +149,7 @@ while True:
     intake()
     ring_riser()
     goal_lock()
+    rpm_regulation()
     stop()
 
     left_wheels.spin(FORWARD, rpm1, RPM)

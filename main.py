@@ -138,7 +138,6 @@ def stop():
         rpm4 = 570
 
 
-
 while True:
    
     drive()

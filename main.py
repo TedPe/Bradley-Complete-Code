@@ -33,22 +33,22 @@ def sprint():
     if bradley_controller_joystick_left>2 and bradley_controller.buttonL1.pressing:
         global rpm1
         rpm1 += 25
-        max (rpm1, 550)
+        max (rpm1, 570)
     
     if bradley_controller_joystick_right>2 and bradley_controller.buttonL1.pressing:
         global rpm2
         rpm2 += 25
-        max (rpm2, 550)
+        max (rpm2, 570)
 
     if bradley_controller_joystick_left<-2 and bradley_controller.buttonL1.pressing:
         global rpm3
         rpm3 += 25
-        max (rpm3, 550)
+        max (rpm3, 570)
     
     if bradley_controller_joystick_right<-2 and bradley_controller.buttonL1.pressing:
         global rpm4
         rpm4 += 25
-        max (rpm4, 550)
+        max (rpm4, 570)
 
 def intake():
     if bradley_controller.buttonB.pressed and flex_wheels.velocity(RPM)>-5 and flex_wheels.velocity(RPM)<5:

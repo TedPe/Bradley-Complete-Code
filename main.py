@@ -25,11 +25,12 @@ right_wheels = MotorGroup (right_wheel_1, right_wheel_2)
 left_wheels = MotorGroup (left_wheel_1, left_wheel_2)
 conveyer = Motor(Ports.PORT20, GearSetting.RATIO_18_1)
 flex_wheels = Motor(Ports.PORT1, GearSetting.RATIO_18_1)
+wall_stake = Motor(Ports.PORT15, GearSetting.RATIO_36_1)
 
 bradley_controller = Controller(ControllerType.PRIMARY)
 
-bradley_controller_joystick_left = bradley_controller.axis2.position()
-bradley_controller_joystick_right = bradley_controller.axis4.position()
+bradley_controller_joystick_left = bradley_controller.axis3.position()
+bradley_controller_joystick_right = bradley_controller.axis2.position()
 
 def intake():
     if bradley_controller.buttonB.pressed and flex_wheels.velocity(RPM)>-5 and flex_wheels.velocity(RPM)<5:
@@ -72,6 +73,12 @@ def drive():
         rpm4 += 20
         rpm4 = min (rpm4, 400)
 
+
+    left_wheels.spin(FORWARD, rpm1, RPM)
+    right_wheels.spin(FORWARD, rpm2, RPM)
+    left_wheels.spin(REVERSE, rpm3, RPM)
+    right_wheels.spin(REVERSE, rpm4, RPM)
+
 def sprint():
     if bradley_controller_joystick_left>2 and bradley_controller.buttonL1.pressing:
         global rpm1
@@ -101,7 +108,7 @@ def stop():
         rpm1 = 0
         rpm3 = 0
 
-    if bradley_controller_joystick_right >-5 and bradley_controller_joystick_right<5:
+    if bradley_controller_joystick_right > -5 and bradley_controller_joystick_right < 5:
         global rpm2
         global rpm4
 
@@ -114,14 +121,14 @@ def rpm_regulation():
     global rpm3
     global rpm4
 
-    if rpm3 > rpm1:
-        rpm1 =0
-    if rpm4 > rpm2:
-        rpm2 =0
-    if rpm2 > rpm4:
-        rpm4 =0
-    if rpm1 > rpm3:
-        rpm3 =0
+   # if rpm3 > rpm1:
+   #     rpm1 =0
+   # if rpm4 > rpm2:
+   #     rpm2 =0
+   # if rpm2 > rpm4:
+   #     rpm4 =0
+   # if rpm1 > rpm3:
+   #     rpm3 =0
 
     if rpm1 < 0:
         rpm1 = 0
@@ -141,6 +148,10 @@ def rpm_regulation():
     if rpm4 > 570:
         rpm4 = 570
 
+def wall_stakes_scoring():
+    if bradley_controller.buttonA.pressed:
+        wall_stake.spin(FORWARD, 90, DEGREES)
+
 
 while True:
    
@@ -151,10 +162,5 @@ while True:
     goal_lock()
     rpm_regulation()
     stop()
-
-    left_wheels.spin(FORWARD, rpm1, RPM)
-    right_wheels.spin(FORWARD, rpm2, RPM)
-    left_wheels.spin(REVERSE, rpm3, RPM)
-    right_wheels.spin(REVERSE, rpm4, RPM)
 
     wait(5, MSEC)
